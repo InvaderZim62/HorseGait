@@ -16,13 +16,25 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qB6-VS-n1Z" customClass="LegView" customModule="WalkerLeg" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qB6-VS-n1Z" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Cpi-Si-l4V"/>
+                            <constraint firstItem="qB6-VS-n1Z" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Odq-Be-MV5"/>
+                            <constraint firstItem="qB6-VS-n1Z" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="cPV-bv-jIC"/>
+                            <constraint firstItem="qB6-VS-n1Z" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="mmJ-Kw-KRM"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="104"/>
+            <point key="canvasLocation" x="137.68115942028987" y="103.53260869565219"/>
         </scene>
     </scenes>
     <resources>
