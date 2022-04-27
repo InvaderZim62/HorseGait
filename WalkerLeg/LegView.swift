@@ -22,16 +22,23 @@ struct LegConst {
 
 class LegView: UIView {
     
+    var crankCenter = CGPoint.zero
     var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
     var firstTouchAngle = 0.0
-
-    lazy var centerX = Double(self.center.x)
-    lazy var centerY = Double(self.center.y)
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .yellow
+        isOpaque = false  // makes background clear, instead of black
+    }
+
+    required init?(coder: NSCoder) {  // called for views created in storyboard
+        super.init(coder: coder)
+    }
+
     // called if bounds change
     override func layoutSubviews() {
-        centerX = Double(self.center.x)
-        centerY = Double(self.center.y)
+        crankCenter = CGPoint(x: 0.81 * bounds.width, y: 0.26 * bounds.height)
         setNeedsDisplay()
     }
 
@@ -39,22 +46,22 @@ class LegView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let firstTouch = touch.location(in: self)
-            firstTouchAngle = atan2(Double(firstTouch.y - self.center.y),
-                                    Double(firstTouch.x - self.center.x))
+            firstTouchAngle = atan2(Double(firstTouch.y - crankCenter.y),
+                                    Double(firstTouch.x - crankCenter.x))
             firstTouchAngle -= crankAngle
         }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let currentTouch = touch.location(in: self)
-            let currentTouchAngle = atan2(Double(currentTouch.y - self.center.y),
-                                          Double(currentTouch.x - self.center.x))
+            let currentTouchAngle = atan2(Double(currentTouch.y - crankCenter.y),
+                                          Double(currentTouch.x - crankCenter.x))
             crankAngle = currentTouchAngle - firstTouchAngle
         }
     }
 
     override func draw(_ rect: CGRect) {
-        let pointA = CGPoint(x: centerX, y: centerY)
+        let pointA = crankCenter
         let pointB = pointA.offsetBy(dx: -LegConst.abDistance, dy: 0)
         let pointC = pointA + CGPoint(x: LegConst.crankLength * cos(crankAngle), y: LegConst.crankLength * sin(crankAngle))
         let lengthBC = pointB.distance(to: pointC)
