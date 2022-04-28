@@ -7,25 +7,24 @@
 
 import UIKit
 
-struct LegConst {
-    static let pointRadius: CGFloat = 3
-    static let crankLength: CGFloat = 30
-    static let thighLength: CGFloat = 100
-    static let kneeLength: CGFloat = 84
-    static let kneeDepth: CGFloat = 69
-    static let shinLength: CGFloat = 120
-    static let abDistance: CGFloat = 71.5
-    static let hamstringAttach: CGFloat = kneeDepth
-    static let footBottomLength: CGFloat = 167
-    static let footTopLength: CGFloat = 135
-}
-
 class LegView: UIView {
     
     var crankCenter = CGPoint.zero
     var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
     var firstTouchAngle = 0.0
     
+    private var pointRadius: CGFloat = 3
+    private var reference: CGFloat = 0
+    private var crankLength: CGFloat = 30
+    private var thighLength: CGFloat = 100
+    private var kneeLength: CGFloat = 84
+    private var kneeDepth: CGFloat = 69
+    private var shinLength: CGFloat = 120
+    private var abDistance: CGFloat = 71.5
+    private var hamstringAttach: CGFloat = 69
+    private var footBottomLength: CGFloat = 167
+    private var footTopLength: CGFloat = 135
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .yellow
@@ -38,8 +37,28 @@ class LegView: UIView {
 
     // called if bounds change
     override func layoutSubviews() {
-        crankCenter = CGPoint(x: 0.81 * bounds.width, y: 0.26 * bounds.height)
+        computeDimensions()
         setNeedsDisplay()
+    }
+    
+    private func computeDimensions() {
+        var scale = 0.0
+        if bounds.height / bounds.width > 1.17 {  // extremes of leg motion are 1:1.17 (w:h)
+            scale = bounds.width / 282
+        } else {
+            scale = bounds.height / 332
+        }
+        crankCenter = CGPoint(x: bounds.width - 46 * scale, y: 82 * scale)
+        pointRadius = 5 * scale
+        crankLength = 30 * scale
+        thighLength = 100 * scale
+        kneeLength = 84 * scale
+        kneeDepth = 69 * scale
+        shinLength = 120 * scale
+        abDistance = 71.5 * scale
+        hamstringAttach = 69 * scale
+        footBottomLength = 167 * scale
+        footTopLength = 135 * scale
     }
 
     // use these next two methods to allow user to rotate bar
@@ -62,25 +81,25 @@ class LegView: UIView {
 
     override func draw(_ rect: CGRect) {
         let pointA = crankCenter
-        let pointB = pointA.offsetBy(dx: -LegConst.abDistance, dy: 0)
-        let pointC = pointA + CGPoint(x: LegConst.crankLength * cos(crankAngle), y: LegConst.crankLength * sin(crankAngle))
+        let pointB = pointA.offsetBy(dx: -abDistance, dy: 0)
+        let pointC = pointA + CGPoint(x: crankLength * cos(crankAngle), y: crankLength * sin(crankAngle))
         let lengthBC = pointB.distance(to: pointC)
         let angleABC = pointB.bearing(to: pointC)
-        let angleCBD = -acos((pow(lengthBC, 2) + pow(LegConst.kneeDepth, 2) - pow(LegConst.thighLength, 2)) / (2 * lengthBC * LegConst.kneeDepth))
+        let angleCBD = -acos((pow(lengthBC, 2) + pow(kneeDepth, 2) - pow(thighLength, 2)) / (2 * lengthBC * kneeDepth))
         let angleABD = angleABC + angleCBD
-        let pointD = pointB + CGPoint(x: LegConst.kneeDepth * cos(angleABD), y: LegConst.kneeDepth * sin(angleABD))
-        let angleDBE = -2 * asin(0.5 * LegConst.kneeLength / LegConst.kneeDepth)
+        let pointD = pointB + CGPoint(x: kneeDepth * cos(angleABD), y: kneeDepth * sin(angleABD))
+        let angleDBE = -2 * asin(0.5 * kneeLength / kneeDepth)
         let angleABE = angleABD + angleDBE
-        let pointE = pointB + CGPoint(x: LegConst.kneeDepth * cos(angleABE), y: LegConst.kneeDepth * sin(angleABE))
-        let angleCBF = acos((pow(lengthBC, 2) + pow(LegConst.hamstringAttach, 2) - pow(LegConst.thighLength, 2)) / (2 * lengthBC * LegConst.hamstringAttach))
+        let pointE = pointB + CGPoint(x: kneeDepth * cos(angleABE), y: kneeDepth * sin(angleABE))
+        let angleCBF = acos((pow(lengthBC, 2) + pow(hamstringAttach, 2) - pow(thighLength, 2)) / (2 * lengthBC * hamstringAttach))
         let angleABF = angleABC + angleCBF
-        let pointF = pointB + CGPoint(x: LegConst.hamstringAttach * cos(angleABF), y: LegConst.hamstringAttach * sin(angleABF))
-        let pointG = pointB + CGPoint(x: LegConst.shinLength * cos(angleABF), y: LegConst.shinLength * sin(angleABF))
-        let pointH = pointE + CGPoint(x: LegConst.shinLength * cos(angleABF), y: LegConst.shinLength * sin(angleABF))
-        let angleHGT = -acos((pow(LegConst.kneeDepth, 2) + pow(LegConst.footTopLength, 2) - pow(LegConst.footBottomLength, 2)) / (2 * LegConst.kneeDepth * LegConst.footTopLength))
+        let pointF = pointB + CGPoint(x: hamstringAttach * cos(angleABF), y: hamstringAttach * sin(angleABF))
+        let pointG = pointB + CGPoint(x: shinLength * cos(angleABF), y: shinLength * sin(angleABF))
+        let pointH = pointE + CGPoint(x: shinLength * cos(angleABF), y: shinLength * sin(angleABF))
+        let angleHGT = -acos((pow(kneeDepth, 2) + pow(footTopLength, 2) - pow(footBottomLength, 2)) / (2 * kneeDepth * footTopLength))
         let angleGHT = angleABE + angleHGT
-        let toePoint = pointG + CGPoint(x: LegConst.footTopLength * cos(angleGHT), y: LegConst.footTopLength * sin(angleGHT))
-
+        let toePoint = pointG + CGPoint(x: footTopLength * cos(angleGHT), y: footTopLength * sin(angleGHT))
+                
         UIColor.black.setFill()
         UIColor.lightGray.setFill()
 
@@ -132,7 +151,7 @@ class LegView: UIView {
     }
     
     private func drawCircleWith(center: CGPoint) {
-        let circle = UIBezierPath(arcCenter: center, radius: LegConst.pointRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let circle = UIBezierPath(arcCenter: center, radius: pointRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
         circle.stroke()
     }
 }
