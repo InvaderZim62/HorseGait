@@ -20,7 +20,7 @@ extension CGPoint {
         return CGPoint(x: x + dx, y: y + dy)
     }
     
-    func distance(to point: CGPoint) -> CGFloat {
+    func distance(to point: CGPoint) -> Double {
         return sqrt(pow(point.x - self.x, 2) + pow(point.y - self.y, 2))
     }
     

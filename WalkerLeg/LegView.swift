@@ -13,16 +13,16 @@ class LegView: UIView {
     var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
     
     private var pointRadius: CGFloat = 3
-    private var reference: CGFloat = 0
-    private var crankLength: CGFloat = 30
-    private var thighLength: CGFloat = 100
-    private var kneeLength: CGFloat = 84
-    private var kneeDepth: CGFloat = 69
-    private var shinLength: CGFloat = 120
-    private var abDistance: CGFloat = 71.5
-    private var hamstringAttach: CGFloat = 69
-    private var footBottomLength: CGFloat = 167
-    private var footTopLength: CGFloat = 135
+    private var reference = 0.0
+    private var crankLength = 30.0
+    private var thighLength = 100.0
+    private var kneeLength = 84.0
+    private var kneeDepth = 69.0
+    private var shinLength = 120.0
+    private var abDistance = 71.5
+    private var hamstringAttach = 69.0
+    private var footBottomLength = 167.0
+    private var footTopLength = 135.0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -94,7 +94,7 @@ class LegView: UIView {
         thigh.addLine(to: pointC)
         thigh.addLine(to: pointF)
         thigh.stroke()
-        
+
         let knee = UIBezierPath()
         knee.move(to: pointB)
         knee.addLine(to: pointD)
@@ -102,17 +102,17 @@ class LegView: UIView {
         knee.close()
         knee.stroke()
         knee.fill()
-        
+
         let shin = UIBezierPath()
         shin.move(to: pointE)
         shin.addLine(to: pointH)
         shin.stroke()
-        
+
         let hamstring = UIBezierPath()
         hamstring.move(to: pointB)
         hamstring.addLine(to: pointG)
         hamstring.stroke()
-        
+
         let foot = UIBezierPath()
         foot.move(to: pointG)
         foot.addLine(to: pointH)
@@ -120,7 +120,7 @@ class LegView: UIView {
         foot.close()
         foot.stroke()
         foot.fill()
-        
+
         drawCircleWith(center: pointA)
         drawCircleWith(center: pointB)
         drawCircleWith(center: pointC)
