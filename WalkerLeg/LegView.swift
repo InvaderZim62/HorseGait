@@ -11,7 +11,6 @@ class LegView: UIView {
     
     var crankCenter = CGPoint.zero
     var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
-    var firstTouchAngle = 0.0
     
     private var pointRadius: CGFloat = 3
     private var reference: CGFloat = 0
@@ -27,7 +26,7 @@ class LegView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .yellow
+//        backgroundColor = .yellow
         isOpaque = false  // makes background clear, instead of black
     }
 
@@ -59,24 +58,6 @@ class LegView: UIView {
         hamstringAttach = 69 * scale
         footBottomLength = 167 * scale
         footTopLength = 135 * scale
-    }
-
-    // use these next two methods to allow user to rotate bar
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let firstTouch = touch.location(in: self)
-            firstTouchAngle = atan2(Double(firstTouch.y - crankCenter.y),
-                                    Double(firstTouch.x - crankCenter.x))
-            firstTouchAngle -= crankAngle
-        }
-    }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let currentTouch = touch.location(in: self)
-            let currentTouchAngle = atan2(Double(currentTouch.y - crankCenter.y),
-                                          Double(currentTouch.x - crankCenter.x))
-            crankAngle = currentTouchAngle - firstTouchAngle
-        }
     }
 
     override func draw(_ rect: CGRect) {
