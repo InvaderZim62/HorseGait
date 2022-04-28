@@ -12,6 +12,8 @@ struct Constants {
     static let walkPeriod = 2.0  // seconds per step cycle
     static let legPhaseAngle = 140.0 * Double.pi / 180
     static let viewWidth: CGFloat = 200
+    static let primaryColor = #colorLiteral(red: 0.9998988509, green: 1, blue: 0.7175351977, alpha: 1)
+    static let pegColor = #colorLiteral(red: 0.7533841729, green: 0.7588498592, blue: 0.549562037, alpha: 1)
 }
 
 class ViewController: UIViewController {

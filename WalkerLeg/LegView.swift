@@ -26,7 +26,6 @@ class LegView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .yellow
         isOpaque = false  // makes background clear, instead of black
     }
 
@@ -80,19 +79,31 @@ class LegView: UIView {
         let angleHGT = -acos((pow(kneeDepth, 2) + pow(footTopLength, 2) - pow(footBottomLength, 2)) / (2 * kneeDepth * footTopLength))
         let angleGHT = angleABE + angleHGT
         let toePoint = pointG + CGPoint(x: footTopLength * cos(angleGHT), y: footTopLength * sin(angleGHT))
-                
-        UIColor.black.setFill()
-        UIColor.lightGray.setFill()
+        
+        let outlineWidth = 7.0
+        let lineWidth = 6.0
 
         let crank = UIBezierPath()
         crank.move(to: pointA)
         crank.addLine(to: pointC)
+        crank.lineWidth = outlineWidth
+        UIColor.black.setStroke()
         crank.stroke()
-        
+        crank.lineWidth = lineWidth
+        Constants.primaryColor.setStroke()
+        crank.stroke()
+
+        drawCircleWith(center: pointA)
+
         let thigh = UIBezierPath()
         thigh.move(to: pointD)
         thigh.addLine(to: pointC)
         thigh.addLine(to: pointF)
+        thigh.lineWidth = outlineWidth
+        UIColor.black.setStroke()
+        thigh.stroke()
+        thigh.lineWidth = lineWidth
+        Constants.primaryColor.setStroke()
         thigh.stroke()
 
         let knee = UIBezierPath()
@@ -100,17 +111,29 @@ class LegView: UIView {
         knee.addLine(to: pointD)
         knee.addLine(to: pointE)
         knee.close()
+        UIColor.black.setStroke()
         knee.stroke()
+        Constants.primaryColor.setFill()
         knee.fill()
 
         let shin = UIBezierPath()
         shin.move(to: pointE)
         shin.addLine(to: pointH)
+        shin.lineWidth = outlineWidth
+        UIColor.black.setStroke()
+        shin.stroke()
+        shin.lineWidth = lineWidth
+        Constants.primaryColor.setStroke()
         shin.stroke()
 
         let hamstring = UIBezierPath()
         hamstring.move(to: pointB)
         hamstring.addLine(to: pointG)
+        hamstring.lineWidth = outlineWidth
+        UIColor.black.setStroke()
+        hamstring.stroke()
+        hamstring.lineWidth = lineWidth
+        Constants.primaryColor.setStroke()
         hamstring.stroke()
 
         let foot = UIBezierPath()
@@ -118,10 +141,11 @@ class LegView: UIView {
         foot.addLine(to: pointH)
         foot.addLine(to: toePoint)
         foot.close()
+        UIColor.black.setStroke()
         foot.stroke()
+        Constants.primaryColor.setFill()
         foot.fill()
 
-        drawCircleWith(center: pointA)
         drawCircleWith(center: pointB)
         drawCircleWith(center: pointC)
         drawCircleWith(center: pointD)
@@ -133,6 +157,9 @@ class LegView: UIView {
     
     private func drawCircleWith(center: CGPoint) {
         let circle = UIBezierPath(arcCenter: center, radius: pointRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+        UIColor.black.setStroke()
         circle.stroke()
+        Constants.pegColor.setFill()
+        circle.fill()
     }
 }
