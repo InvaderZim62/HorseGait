@@ -8,6 +8,8 @@
 import UIKit
 
 struct Constants {
+    static let frameTime = 0.05  // seconds
+    static let walkPeriod = 2.0  // seconds per step cycle
     static let legPhaseAngle = 140.0 * Double.pi / 180
     static let viewWidth: CGFloat = 200
 }
@@ -16,8 +18,8 @@ class ViewController: UIViewController {
     
     let rearLegView = LegView()
     let frontLegView = LegView()
-    var firstTouchAngle = 0.0
-    var touchAngle = -1.5 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
+    var simulationTimer = Timer()
+    var rotationAngle = -1.5 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,30 +34,23 @@ class ViewController: UIViewController {
         frontLegView.layer.transform = CATransform3DMakeScale(-1, 1, 1)  // flip vertically
         view.addSubview(rearLegView)
         view.addSubview(frontLegView)
-        updateViewFromModel()
-    }
-    
-    private func updateViewFromModel() {
-        rearLegView.crankAngle = touchAngle
-        frontLegView.crankAngle = -touchAngle + Constants.legPhaseAngle
+        startSimulation()
     }
 
-    // use these next two methods to allow user to turn cranks
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let firstTouch = touch.location(in: view)
-            firstTouchAngle = atan2(Double(firstTouch.y - view.center.y),
-                                    Double(firstTouch.x - view.center.x))
-            firstTouchAngle -= touchAngle
-        }
+    private func updateViewFromModel() {
+        rearLegView.crankAngle = rotationAngle
+        frontLegView.crankAngle = -rotationAngle + Constants.legPhaseAngle
     }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let currentTouch = touch.location(in: view)
-            let currentTouchAngle = atan2(Double(currentTouch.y - view.center.y),
-                                          Double(currentTouch.x - view.center.x))
-            touchAngle = currentTouchAngle - firstTouchAngle
-        }
+
+    private func startSimulation() {
+        simulationTimer = Timer.scheduledTimer(timeInterval: Constants.frameTime, target: self,
+                                               selector: #selector(updateSimulation),
+                                               userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateSimulation() {
+        let deltaAngle = 2 * Double.pi / Constants.walkPeriod * Constants.frameTime
+        rotationAngle = (rotationAngle + deltaAngle).truncatingRemainder(dividingBy: 2 * Double.pi)
     }
 }
 
