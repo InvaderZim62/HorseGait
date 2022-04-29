@@ -11,6 +11,7 @@ struct Constants {
     static let frameTime = 0.05  // seconds
     static let walkPeriod = 2.6  // seconds per step cycle
     static let viewWidth: CGFloat = 200
+    static let torsoWidth: CGFloat = 10  // separation between front and rear leg views
     static let foregroundColor = #colorLiteral(red: 0.9998988509, green: 1, blue: 0.7175351977, alpha: 1)
     static let backgroundColor = #colorLiteral(red: 0.7775719762, green: 0.7785590291, blue: 0.5715256929, alpha: 1)
     static let pegColor = #colorLiteral(red: 0.7533841729, green: 0.7588498592, blue: 0.549562037, alpha: 1)
@@ -35,7 +36,7 @@ class ViewController: UIViewController {
                                        height: 1.17 * Constants.viewWidth)
         leftRearLegView.primaryColor = Constants.backgroundColor
         view.addSubview(leftRearLegView)
-        leftFrontLegView.frame = CGRect(x: 350,
+        leftFrontLegView.frame = CGRect(x: 310 + Constants.torsoWidth,
                                         y: 340 - Constants.viewWidth,
                                         width: Constants.viewWidth,
                                         height: 1.17 * Constants.viewWidth)
@@ -46,7 +47,7 @@ class ViewController: UIViewController {
         // body (between legs)
         let bodyView = UIView(frame: CGRect(x: 310 - Constants.viewWidth / 2,
                                             y: 370 - Constants.viewWidth,
-                                            width: Constants.viewWidth + 40,
+                                            width: Constants.viewWidth + Constants.torsoWidth,
                                             height: 0.3 * Constants.viewWidth))
         bodyView.backgroundColor = Constants.foregroundColor
         view.addSubview(bodyView)
@@ -58,7 +59,7 @@ class ViewController: UIViewController {
                                         height: 1.17 * Constants.viewWidth)
         rightRearLegView.primaryColor = Constants.foregroundColor
         view.addSubview(rightRearLegView)
-        rightFrontLegView.frame = CGRect(x: 350,
+        rightFrontLegView.frame = CGRect(x: 310 + Constants.torsoWidth,
                                          y: 340 - Constants.viewWidth,
                                          width: Constants.viewWidth,
                                          height: 1.17 * Constants.viewWidth)
