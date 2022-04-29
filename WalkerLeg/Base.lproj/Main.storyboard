@@ -57,27 +57,14 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d68-7i-zdc">
-                                <rect key="frame" x="147.33333333333334" y="158" width="441.33333333333326" height="256"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="d68-7i-zdc" secondAttribute="height" multiplier="1:0.58" id="vwd-ZG-aq3"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.73708514793954716" green="0.62678928140459789" blue="0.47245953464968282" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="d68-7i-zdc" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.6" id="GR3-dH-Hsh"/>
                             <constraint firstItem="oum-Ol-rbo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RXk-rt-ptn"/>
                             <constraint firstItem="oum-Ol-rbo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="TXP-em-93Z"/>
-                            <constraint firstItem="d68-7i-zdc" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ac3-a0-zN1"/>
-                            <constraint firstItem="d68-7i-zdc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hHh-lT-8l9"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="horseView" destination="d68-7i-zdc" id="fpI-sY-sc0"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

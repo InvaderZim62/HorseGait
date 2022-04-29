@@ -22,11 +22,12 @@ struct Gate {
 
 class ViewController: UIViewController {
     
+    let horseView = UIView()
+    let bodyView = UIView()
     let leftRearLegView = LegView()
     let leftFrontLegView = LegView()
     let rightRearLegView = LegView()
     let rightFrontLegView = LegView()
-    let bodyView = UIView()
     var simulationTimer = Timer()
     var rotationAngle = -1.5 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
     var gait = Gate()
@@ -35,10 +36,9 @@ class ViewController: UIViewController {
     let canter = Gate(phase: [0.0, 0.3, 0.3, 0.9])
     let gallop = Gate(phase: [0.0, 0.6, 0.3, 0.9])
 
-    @IBOutlet weak var horseView: UIView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        gait = walk
         bodyView.backgroundColor = Constants.closeBodyColor
         bodyView.layer.borderColor = UIColor.black.cgColor
         bodyView.layer.borderWidth = 0.5
@@ -49,6 +49,7 @@ class ViewController: UIViewController {
         rightRearLegView.primaryColor = Constants.closeBodyColor
         rightFrontLegView.primaryColor = Constants.closeBodyColor
         
+        view.addSubview(horseView)
         horseView.addSubview(leftRearLegView)
         horseView.addSubview(leftFrontLegView)
         horseView.addSubview(bodyView)
@@ -57,6 +58,8 @@ class ViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        horseView.frame = CGRect(x: 0, y: 0, width: 0.6 * view.bounds.width, height: 0.34 * view.bounds.width)
+        horseView.center = CGPoint(x: 0.5 * view.bounds.width, y: view.bounds.height - 0.17 * view.bounds.width)
         bodyView.frame = CGRect(x: horseView.bounds.width / 4,
                                 y: 0.12 * horseView.bounds.height,
                                 width: horseView.bounds.width / 2,
@@ -82,7 +85,6 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        gait = walk
         startSimulation()
     }
     
