@@ -10,10 +10,8 @@ import UIKit
 struct Constants {
     static let frameTime = 0.05  // seconds
     static let stridePeriod = 1.8  // seconds per four-step sequence
-    static let viewWidth: CGFloat = 200
-    static let torsoWidth: CGFloat = 10  // separation between front and rear leg views
-    static let foregroundColor = #colorLiteral(red: 0.9998988509, green: 1, blue: 0.7175351977, alpha: 1)
-    static let backgroundColor = #colorLiteral(red: 0.7775719762, green: 0.7785590291, blue: 0.5715256929, alpha: 1)
+    static let closeBodyColor = #colorLiteral(red: 0.9998988509, green: 1, blue: 0.7175351977, alpha: 1)
+    static let farBodyColor = #colorLiteral(red: 0.7775719762, green: 0.7785590291, blue: 0.5715256929, alpha: 1)
     static let pegColor = #colorLiteral(red: 0.7533841729, green: 0.7588498592, blue: 0.549562037, alpha: 1)
     static let pivotColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 }
@@ -28,6 +26,7 @@ class ViewController: UIViewController {
     let leftFrontLegView = LegView()
     let rightRearLegView = LegView()
     let rightFrontLegView = LegView()
+    let bodyView = UIView()
     var simulationTimer = Timer()
     var rotationAngle = -1.5 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
     var gait = Gate()
@@ -36,46 +35,53 @@ class ViewController: UIViewController {
     let canter = Gate(phase: [0.0, 0.3, 0.3, 0.9])
     let gallop = Gate(phase: [0.0, 0.6, 0.3, 0.9])
 
+    @IBOutlet weak var horseView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // left legs (background)
-        leftRearLegView.frame = CGRect(x: 310 - Constants.viewWidth,
-                                       y: 340 - Constants.viewWidth,
-                                       width: Constants.viewWidth,
-                                       height: 1.17 * Constants.viewWidth)
-        leftRearLegView.primaryColor = Constants.backgroundColor
-        view.addSubview(leftRearLegView)
-        leftFrontLegView.frame = CGRect(x: 310 + Constants.torsoWidth,
-                                        y: 340 - Constants.viewWidth,
-                                        width: Constants.viewWidth,
-                                        height: 1.17 * Constants.viewWidth)
-        leftFrontLegView.primaryColor = Constants.backgroundColor
-        leftFrontLegView.layer.transform = CATransform3DMakeScale(-1, 1, 1)  // flip vertically
-        view.addSubview(leftFrontLegView)
+        bodyView.backgroundColor = Constants.closeBodyColor
+        bodyView.layer.borderColor = UIColor.black.cgColor
+        bodyView.layer.borderWidth = 0.5
+        bodyView.layer.cornerRadius = 10
         
-        // body (between legs)
-        let bodyView = UIView(frame: CGRect(x: 310 - Constants.viewWidth / 2,
-                                            y: 370 - Constants.viewWidth,
-                                            width: Constants.viewWidth + Constants.torsoWidth,
-                                            height: 0.3 * Constants.viewWidth))
-        bodyView.backgroundColor = Constants.foregroundColor
-        view.addSubview(bodyView)
+        leftRearLegView.primaryColor = Constants.farBodyColor
+        leftFrontLegView.primaryColor = Constants.farBodyColor
+        rightRearLegView.primaryColor = Constants.closeBodyColor
+        rightFrontLegView.primaryColor = Constants.closeBodyColor
         
-        // right legs (foreground)
-        rightRearLegView.frame = CGRect(x: 310 - Constants.viewWidth,
-                                        y: 340 - Constants.viewWidth,
-                                        width: Constants.viewWidth,
-                                        height: 1.17 * Constants.viewWidth)
-        rightRearLegView.primaryColor = Constants.foregroundColor
-        view.addSubview(rightRearLegView)
-        rightFrontLegView.frame = CGRect(x: 310 + Constants.torsoWidth,
-                                         y: 340 - Constants.viewWidth,
-                                         width: Constants.viewWidth,
-                                         height: 1.17 * Constants.viewWidth)
-        rightFrontLegView.primaryColor = Constants.foregroundColor
-        rightFrontLegView.layer.transform = CATransform3DMakeScale(-1, 1, 1)  // flip vertically
-        view.addSubview(rightFrontLegView)
-
+        horseView.addSubview(leftRearLegView)
+        horseView.addSubview(leftFrontLegView)
+        horseView.addSubview(bodyView)
+        horseView.addSubview(rightRearLegView)
+        horseView.addSubview(rightFrontLegView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        bodyView.frame = CGRect(x: horseView.bounds.width / 4,
+                                y: 0.12 * horseView.bounds.height,
+                                width: horseView.bounds.width / 2,
+                                height: horseView.bounds.height / 4)
+        leftRearLegView.frame = CGRect(x: 0,
+                                       y: 0,
+                                       width: horseView.bounds.width / 2,
+                                       height: horseView.bounds.height)
+        leftFrontLegView.frame = CGRect(x: horseView.bounds.width / 2,
+                                        y: 0,
+                                        width: horseView.bounds.width / 2,
+                                        height: horseView.bounds.height)
+        leftFrontLegView.layer.transform = CATransform3DMakeScale(-1, 1, 1)  // flip front leg vertically
+        rightRearLegView.frame = CGRect(x: 0,
+                                        y: 0,
+                                        width: horseView.bounds.width / 2,
+                                        height: horseView.bounds.height)
+        rightFrontLegView.frame = CGRect(x: horseView.bounds.width / 2,
+                                         y: 0,
+                                         width: horseView.bounds.width / 2,
+                                         height: horseView.bounds.height)
+        rightFrontLegView.layer.transform = CATransform3DMakeScale(-1, 1, 1)  // flip front leg vertically
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         gait = walk
         startSimulation()
     }
