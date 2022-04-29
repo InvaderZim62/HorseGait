@@ -45,6 +45,8 @@ class ViewController: UIViewController {
     let canter = Sim(gate: .canter, phase: [0.0, 0.3, 0.3, 0.9])
     let gallop = Sim(gate: .gallop, phase: [0.0, 0.6, 0.3, 0.9])
 
+    @IBOutlet var gaitButtons: [UIButton]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sim = walk
@@ -95,6 +97,7 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        underlineTextForButton(gaitButtons[0], true)
         startSimulation()
     }
     
@@ -126,9 +129,17 @@ class ViewController: UIViewController {
         horseView.center.y = view.bounds.height - horseHeight + deltaHeight
     }
     
+    private func underlineTextForButton(_ button: UIButton, _ underline: Bool) {
+        let buttonText = button.titleLabel?.text
+        let attributedText = NSAttributedString(string: buttonText!,
+                                                attributes: [.foregroundColor: view.tintColor!,
+                                                             .underlineStyle: underline ? NSUnderlineStyle.single.rawValue : 0])
+        button.setAttributedTitle(attributedText, for: .normal)
+    }
+    
     @IBAction func gateSelected(_ sender: UIButton) {
-        let buttonTitle = sender.title(for: .normal)
-        switch buttonTitle {
+        let buttonText = sender.titleLabel?.text
+        switch buttonText {
         case "Walk":
             sim = walk
         case "Trot":
@@ -138,6 +149,8 @@ class ViewController: UIViewController {
         default:
             sim = gallop
         }
+        gaitButtons.forEach { underlineTextForButton($0, false) }  // clear all underlines
+        underlineTextForButton(sender, true)
     }
 }
 
