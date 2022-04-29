@@ -14,6 +14,7 @@ struct Constants {
     static let viewWidth: CGFloat = 200
     static let primaryColor = #colorLiteral(red: 0.9998988509, green: 1, blue: 0.7175351977, alpha: 1)
     static let pegColor = #colorLiteral(red: 0.7533841729, green: 0.7588498592, blue: 0.549562037, alpha: 1)
+    static let pivotColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
 }
 
 class ViewController: UIViewController {

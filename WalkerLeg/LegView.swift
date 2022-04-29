@@ -41,7 +41,8 @@ class LegView: UIView {
     
     private func computeDimensions() {
         var scale = 0.0
-        if bounds.height / bounds.width > 1.17 {  // extremes of leg motion are 1:1.17 (w:h)
+        // pick drawing scale to just fit within most-limited dimension
+        if bounds.height / bounds.width > 1.17 {  // ratio of full leg motion is 1:1.17 (w:h)
             scale = bounds.width / 282
         } else {
             scale = bounds.height / 332
@@ -93,7 +94,7 @@ class LegView: UIView {
         Constants.primaryColor.setStroke()
         crank.stroke()
 
-        drawCircleWith(center: pointA)
+        drawCircleWith(center: pointA, ofColor: Constants.pivotColor)
 
         let thigh = UIBezierPath()
         thigh.move(to: pointD)
@@ -146,20 +147,20 @@ class LegView: UIView {
         Constants.primaryColor.setFill()
         foot.fill()
 
-        drawCircleWith(center: pointB)
-        drawCircleWith(center: pointC)
-        drawCircleWith(center: pointD)
-        drawCircleWith(center: pointE)
-        drawCircleWith(center: pointF)
-        drawCircleWith(center: pointG)
-        drawCircleWith(center: pointH)
+        drawCircleWith(center: pointB, ofColor: Constants.pivotColor)
+        drawCircleWith(center: pointC, ofColor: Constants.pegColor)
+        drawCircleWith(center: pointD, ofColor: Constants.pegColor)
+        drawCircleWith(center: pointE, ofColor: Constants.pegColor)
+        drawCircleWith(center: pointF, ofColor: Constants.pegColor)
+        drawCircleWith(center: pointG, ofColor: Constants.pegColor)
+        drawCircleWith(center: pointH, ofColor: Constants.pegColor)
     }
     
-    private func drawCircleWith(center: CGPoint) {
+    private func drawCircleWith(center: CGPoint, ofColor color: UIColor) {
         let circle = UIBezierPath(arcCenter: center, radius: pointRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
         UIColor.black.setStroke()
         circle.stroke()
-        Constants.pegColor.setFill()
+        color.setFill()
         circle.fill()
     }
 }
