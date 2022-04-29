@@ -16,7 +16,15 @@ struct Constants {
     static let pivotColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 }
 
-struct Gate {
+enum Gate {
+    case walk
+    case trot
+    case canter
+    case gallop
+}
+
+struct Sim {
+    var gate = Gate.walk
     var phase = [0.0, 1.5, 1.0, 0.5]  // left rear, left front, right rear, right front
 }
 
@@ -29,16 +37,17 @@ class ViewController: UIViewController {
     let rightRearLegView = LegView()
     let rightFrontLegView = LegView()
     var simulationTimer = Timer()
-    var rotationAngle = -1.5 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
-    var gait = Gate()
-    let walk = Gate(phase: [0.0, 0.5, 1.0, 1.5])
-    let trot = Gate(phase: [0.0, 1.0, 1.0, 0.0])
-    let canter = Gate(phase: [0.0, 0.3, 0.3, 0.9])
-    let gallop = Gate(phase: [0.0, 0.6, 0.3, 0.9])
+    var rotationAngle = 0.0 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
+    var horseHeight = 0.0
+    var sim = Sim()
+    let walk = Sim(gate: .walk, phase: [0.0, 0.5, 1.0, 1.5])
+    let trot = Sim(gate: .trot, phase: [0.0, 1.0, 1.0, 0.0])
+    let canter = Sim(gate: .canter, phase: [0.0, 0.3, 0.3, 0.9])
+    let gallop = Sim(gate: .gallop, phase: [0.0, 0.6, 0.3, 0.9])
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        gait = walk
+        sim = walk
         bodyView.backgroundColor = Constants.closeBodyColor
         bodyView.layer.borderColor = UIColor.black.cgColor
         bodyView.layer.borderWidth = 0.5
@@ -59,7 +68,8 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         horseView.frame = CGRect(x: 0, y: 0, width: 0.6 * view.bounds.width, height: 0.34 * view.bounds.width)
-        horseView.center = CGPoint(x: 0.5 * view.bounds.width, y: view.bounds.height - 0.17 * view.bounds.width)
+        horseHeight = 0.17 * view.bounds.width
+        horseView.center = CGPoint(x: 0.5 * view.bounds.width, y: view.bounds.height - horseHeight)
         bodyView.frame = CGRect(x: horseView.bounds.width / 4,
                                 y: 0.12 * horseView.bounds.height,
                                 width: horseView.bounds.width / 2,
@@ -89,10 +99,10 @@ class ViewController: UIViewController {
     }
     
     private func updateViewFromModel() {
-        leftRearLegView.crankAngle = rotationAngle - gait.phase[0] * Double.pi
-        leftFrontLegView.crankAngle = -(rotationAngle - gait.phase[1] * Double.pi)
-        rightRearLegView.crankAngle = rotationAngle - gait.phase[2] * Double.pi
-        rightFrontLegView.crankAngle = -(rotationAngle - gait.phase[3] * Double.pi)
+        leftRearLegView.crankAngle = rotationAngle - sim.phase[0] * Double.pi
+        leftFrontLegView.crankAngle = -(rotationAngle - sim.phase[1] * Double.pi)
+        rightRearLegView.crankAngle = rotationAngle - sim.phase[2] * Double.pi
+        rightFrontLegView.crankAngle = -(rotationAngle - sim.phase[3] * Double.pi)
     }
 
     private func startSimulation() {
@@ -104,19 +114,29 @@ class ViewController: UIViewController {
     @objc func updateSimulation() {
         let deltaAngle = 2 * Double.pi / Constants.stridePeriod * Constants.frameTime
         rotationAngle = (rotationAngle + deltaAngle).truncatingRemainder(dividingBy: 2 * Double.pi)
+        var deltaHeight = 0.0
+        switch sim.gate {
+        case .trot:
+            deltaHeight = 4 * sin(2 * rotationAngle)
+        case .canter, .gallop:
+            deltaHeight = 6 * sin(rotationAngle)
+        default:
+            break
+        }
+        horseView.center.y = view.bounds.height - horseHeight + deltaHeight
     }
     
     @IBAction func gateSelected(_ sender: UIButton) {
         let buttonTitle = sender.title(for: .normal)
         switch buttonTitle {
         case "Walk":
-            gait = walk
+            sim = walk
         case "Trot":
-            gait = trot
+            sim = trot
         case "Canter":
-            gait = canter
+            sim = canter
         default:
-            gait = gallop
+            sim = gallop
         }
     }
 }
