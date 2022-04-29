@@ -9,6 +9,7 @@ import UIKit
 
 class LegView: UIView {
     
+    var primaryColor = UIColor.yellow
     var crankCenter = CGPoint.zero
     var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
     
@@ -26,6 +27,7 @@ class LegView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+//        backgroundColor = .yellow.withAlphaComponent(0.5)
         isOpaque = false  // makes background clear, instead of black
     }
 
@@ -111,7 +113,7 @@ class LegView: UIView {
         UIColor.black.setStroke()
         lines.stroke()
         lines.lineWidth = 6
-        Constants.primaryColor.setStroke()
+        primaryColor.setStroke()
         lines.stroke()
     }
     
@@ -127,7 +129,7 @@ class LegView: UIView {
         shape.close()
         UIColor.black.setStroke()
         shape.stroke()
-        Constants.primaryColor.setFill()
+        primaryColor.setFill()
         shape.fill()
     }
 
