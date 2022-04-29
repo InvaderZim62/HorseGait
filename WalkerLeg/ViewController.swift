@@ -76,7 +76,7 @@ class ViewController: UIViewController {
         rightFrontLegView.layer.transform = CATransform3DMakeScale(-1, 1, 1)  // flip vertically
         view.addSubview(rightFrontLegView)
 
-        gait = canter
+        gait = walk
         startSimulation()
     }
     
@@ -96,6 +96,20 @@ class ViewController: UIViewController {
     @objc func updateSimulation() {
         let deltaAngle = 2 * Double.pi / Constants.stridePeriod * Constants.frameTime
         rotationAngle = (rotationAngle + deltaAngle).truncatingRemainder(dividingBy: 2 * Double.pi)
+    }
+    
+    @IBAction func gateSelected(_ sender: UIButton) {
+        let buttonTitle = sender.title(for: .normal)
+        switch buttonTitle {
+        case "Walk":
+            gait = walk
+        case "Trot":
+            gait = trot
+        case "Canter":
+            gait = canter
+        default:
+            gait = gallop
+        }
     }
 }
 
