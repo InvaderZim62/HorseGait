@@ -13,7 +13,7 @@ class LegView: UIView {
     var crankCenter = CGPoint.zero
     var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
     
-    private var pointRadius: CGFloat = 3
+    private var pegRadius: CGFloat = 3
     private var reference = 0.0
     private var crankLength = 30.0
     private var thighLength = 100.0
@@ -50,7 +50,7 @@ class LegView: UIView {
             scale = bounds.height / 332
         }
         crankCenter = CGPoint(x: bounds.width - 46 * scale, y: 82 * scale)
-        pointRadius = 5 * scale
+        pegRadius = 5 * scale
         crankLength = 30 * scale
         thighLength = 100 * scale
         kneeLength = 84 * scale
@@ -83,7 +83,7 @@ class LegView: UIView {
         let angleGHT = angleABE + angleHGT
         let toePoint = pointG + CGPoint(x: footTopLength * cos(angleGHT), y: footTopLength * sin(angleGHT))
 
-        drawThickLinesWithOutlinesFromPoints([pointA, pointC])  // crank
+        drawCrankAroundPoints([pointA, pointC])
         drawCircleWith(center: pointA, ofColor: Constants.pivotColor)  // crank pivot (draw before rest of parts, so they appear on top)
         drawThickLinesWithOutlinesFromPoints([pointD, pointC, pointF])  // thigh
         drawShapeFromPoints([pointB, pointD, pointE])  // knee
@@ -98,6 +98,29 @@ class LegView: UIView {
         drawCircleWith(center: pointF, ofColor: Constants.pegColor)
         drawCircleWith(center: pointG, ofColor: Constants.pegColor)
         drawCircleWith(center: pointH, ofColor: Constants.pegColor)
+    }
+    
+    private func drawCrankAroundPoints(_ points: [CGPoint]) {
+        let pivotRadius = 2.2 * pegRadius
+        let angleToPeg = points[0].bearing(to: points[1])
+        let distanceToPeg = points[0].distance(to: points[1])
+        let angleToTangent = asin((pivotRadius - pegRadius) / distanceToPeg)
+        let crank = UIBezierPath()
+        crank.addArc(withCenter: points[0],
+                     radius: pivotRadius,
+                     startAngle: angleToPeg + Double.pi / 2 - angleToTangent,
+                     endAngle: angleToPeg - Double.pi / 2 + angleToTangent,
+                     clockwise: true)
+        crank.addArc(withCenter: points[1],
+                     radius: pegRadius,
+                     startAngle: angleToPeg - Double.pi / 2 + angleToTangent,
+                     endAngle: angleToPeg + Double.pi / 2 - angleToTangent,
+                     clockwise: true)
+        crank.close()
+        UIColor.black.setStroke()
+        crank.stroke()
+        Constants.pegColor.setFill()
+        crank.fill()
     }
     
     private func drawThickLinesWithOutlinesFromPoints(_ points: [CGPoint]) {
@@ -134,7 +157,7 @@ class LegView: UIView {
     }
 
     private func drawCircleWith(center: CGPoint, ofColor color: UIColor) {
-        let circle = UIBezierPath(arcCenter: center, radius: pointRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let circle = UIBezierPath(arcCenter: center, radius: pegRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
         UIColor.black.setStroke()
         circle.stroke()
         color.setFill()
