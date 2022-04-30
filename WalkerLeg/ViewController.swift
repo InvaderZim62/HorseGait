@@ -55,10 +55,10 @@ class ViewController: UIViewController {
         bodyView.layer.borderWidth = 0.5
         bodyView.layer.cornerRadius = 10
         
-        leftRearLegView.primaryColor = Constants.farBodyColor
-        leftFrontLegView.primaryColor = Constants.farBodyColor
-        rightRearLegView.primaryColor = Constants.closeBodyColor
-        rightFrontLegView.primaryColor = Constants.closeBodyColor
+        leftRearLegView.bodyColor = Constants.farBodyColor
+        leftFrontLegView.bodyColor = Constants.farBodyColor
+        rightRearLegView.bodyColor = Constants.closeBodyColor
+        rightFrontLegView.bodyColor = Constants.closeBodyColor
         
         view.addSubview(horseView)
         horseView.addSubview(leftRearLegView)

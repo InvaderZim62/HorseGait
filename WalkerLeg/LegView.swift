@@ -9,25 +9,25 @@ import UIKit
 
 class LegView: UIView {
     
-    var primaryColor = UIColor.yellow
+    var bodyColor = Constants.closeBodyColor
     var crankCenter = CGPoint.zero
-    var crankAngle = -1.5 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
+    var crankAngle = 0.0 { didSet { setNeedsDisplay() } }  // 0 to right, positive clockwise in radians
     
-    private var pegRadius: CGFloat = 3
+    private var pegRadius = 0.0  // see computeDimensions
     private var reference = 0.0
-    private var crankLength = 30.0
-    private var thighLength = 100.0
-    private var kneeLength = 84.0
-    private var kneeDepth = 69.0
-    private var shinLength = 120.0
-    private var abDistance = 71.5
-    private var hamstringAttach = 69.0
-    private var footBottomLength = 167.0
-    private var footTopLength = 135.0
+    private var crankLength = 0.0
+    private var thighLength = 0.0
+    private var kneeLength = 0.0
+    private var kneeDepth = 0.0
+    private var shinLength = 0.0
+    private var abDistance = 0.0
+    private var hamstringAttach = 0.0
+    private var footBottomLength = 0.0
+    private var footTopLength = 0.0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .yellow.withAlphaComponent(0.5)
+//        backgroundColor = .yellow.withAlphaComponent(0.5)  // use for debugging
         isOpaque = false  // makes background clear, instead of black
     }
 
@@ -43,7 +43,7 @@ class LegView: UIView {
     
     private func computeDimensions() {
         var scale = 0.0
-        // pick drawing scale to just fit within most-limited dimension
+        // pick drawing scale to fit within most-limited dimension
         if bounds.height / bounds.width > 1.17 {  // ratio of full leg motion is 1:1.17 (w:h)
             scale = bounds.width / 282
         } else {
@@ -136,7 +136,7 @@ class LegView: UIView {
         UIColor.black.setStroke()
         lines.stroke()
         lines.lineWidth = 6
-        primaryColor.setStroke()
+        bodyColor.setStroke()
         lines.stroke()
     }
     
@@ -152,7 +152,7 @@ class LegView: UIView {
         shape.close()
         UIColor.black.setStroke()
         shape.stroke()
-        primaryColor.setFill()
+        bodyColor.setFill()
         shape.fill()
     }
 
