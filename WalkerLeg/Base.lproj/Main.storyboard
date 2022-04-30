@@ -32,7 +32,7 @@
                                             </attributedString>
                                         </state>
                                         <connections>
-                                            <action selector="gateSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8yx-7S-83o"/>
+                                            <action selector="gaitSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RrI-uG-qZr"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CXS-RG-wYa">
@@ -48,7 +48,7 @@
                                             </attributedString>
                                         </state>
                                         <connections>
-                                            <action selector="gateSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zwg-KR-flz"/>
+                                            <action selector="gaitSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N6X-Yz-sWJ"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q9A-hg-Dbh">
@@ -64,7 +64,7 @@
                                             </attributedString>
                                         </state>
                                         <connections>
-                                            <action selector="gateSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vds-aW-62Z"/>
+                                            <action selector="gaitSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NOu-YC-you"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aDv-Gl-of4">
@@ -80,7 +80,7 @@
                                             </attributedString>
                                         </state>
                                         <connections>
-                                            <action selector="gateSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sX2-5o-rPO"/>
+                                            <action selector="gaitSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="w6f-SM-Mgy"/>
                                         </connections>
                                     </button>
                                 </subviews>

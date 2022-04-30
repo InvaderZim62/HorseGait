@@ -16,7 +16,7 @@ struct Constants {
     static let pivotColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 }
 
-enum Gate {
+enum Gait {
     case walk
     case trot
     case canter
@@ -24,7 +24,7 @@ enum Gate {
 }
 
 struct Sim {
-    var gate = Gate.walk
+    var gait = Gait.walk
     var phase = [0.0, 1.5, 1.0, 0.5]  // left rear, left front, right rear, right front (these get multiplied by pi in updateViewFromModel)
 }
 
@@ -40,10 +40,10 @@ class ViewController: UIViewController {
     var rotationAngle = 0.0 { didSet { updateViewFromModel() } } // 0 to right, positive clockwise in radians
     var horseHeight = 0.0
     var sim = Sim()
-    let walk = Sim(gate: .walk, phase: [0.0, 0.5, 1.0, 1.5])
-    let trot = Sim(gate: .trot, phase: [0.0, 1.0, 1.0, 0.0])
-    let canter = Sim(gate: .canter, phase: [0.0, 0.3, 0.3, 0.9])
-    let gallop = Sim(gate: .gallop, phase: [0.0, 0.6, 0.3, 0.9])
+    let walk = Sim(gait: .walk, phase: [0.0, 0.5, 1.0, 1.5])
+    let trot = Sim(gait: .trot, phase: [0.0, 1.0, 1.0, 0.0])
+    let canter = Sim(gait: .canter, phase: [0.0, 0.3, 0.3, 0.9])
+    let gallop = Sim(gait: .gallop, phase: [0.0, 0.6, 0.3, 0.9])
 
     @IBOutlet var gaitButtons: [UIButton]!
     
@@ -119,7 +119,7 @@ class ViewController: UIViewController {
         let deltaAngle = 2 * Double.pi / Constants.stridePeriod * Constants.frameTime
         rotationAngle = (rotationAngle + deltaAngle).truncatingRemainder(dividingBy: 2 * Double.pi)
         var deltaHeight = 0.0
-        switch sim.gate {
+        switch sim.gait {
         case .trot:
             deltaHeight = 4 * sin(2 * rotationAngle)
         case .canter, .gallop:
@@ -138,7 +138,7 @@ class ViewController: UIViewController {
         button.setAttributedTitle(attributedText, for: .normal)
     }
     
-    @IBAction func gateSelected(_ sender: UIButton) {
+    @IBAction func gaitSelected(_ sender: UIButton) {
         let buttonText = sender.titleLabel?.text
         switch buttonText {
         case "Walk":
