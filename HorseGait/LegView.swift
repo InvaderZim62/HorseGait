@@ -1,6 +1,6 @@
 //
 //  LegView.swift
-//  WalkerLeg
+//  HorseGait
 //
 //  Created by Phil Stern on 4/27/22.
 //
