@@ -97,6 +97,7 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        gaitButtons.forEach { underlineTextForButton($0, false) }  // set initial button text color here, since it doesn't work in Interface Builder
         underlineTextForButton(gaitButtons[0], true)
         startSimulation()
     }
@@ -129,11 +130,11 @@ class ViewController: UIViewController {
         horseView.center.y = view.bounds.height - horseHeight + deltaHeight
     }
     
-    private func underlineTextForButton(_ button: UIButton, _ underline: Bool) {
+    private func underlineTextForButton(_ button: UIButton, _ isUnderline: Bool) {
         let buttonText = button.titleLabel?.text
         let attributedText = NSAttributedString(string: buttonText!,
                                                 attributes: [.foregroundColor: view.tintColor!,
-                                                             .underlineStyle: underline ? NSUnderlineStyle.single.rawValue : 0])
+                                                             .underlineStyle: isUnderline ? NSUnderlineStyle.single.rawValue : 0])
         button.setAttributedTitle(attributedText, for: .normal)
     }
     
