@@ -25,7 +25,7 @@ enum Gate {
 
 struct Sim {
     var gate = Gate.walk
-    var phase = [0.0, 1.5, 1.0, 0.5]  // left rear, left front, right rear, right front
+    var phase = [0.0, 1.5, 1.0, 0.5]  // left rear, left front, right rear, right front (these get multiplied by pi in updateViewFromModel)
 }
 
 class ViewController: UIViewController {
