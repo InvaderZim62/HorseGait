@@ -1,4 +1,4 @@
-# HorseGait
+# Horse Gait
 
 This is a simple app to demonstrate two things - the automation of mechanical legs, and the synchronization
 of a horse's legs during different gaits.
